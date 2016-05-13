@@ -15,7 +15,6 @@ var clone = require('clone'),
     morgan = require('morgan');
 
 var serve_font = require('./serve_font'),
-    serve_rendered = require('./serve_rendered'),
     serve_style = require('./serve_style'),
     serve_data = require('./serve_data'),
     utils = require('./utils');
@@ -92,10 +91,6 @@ module.exports = function(opts, callback) {
         }, function(font) {
           serving.fonts[font] = true;
         }));
-    }
-    if (item.serve_rendered !== false) {
-      app.use('/styles/' + id + '/',
-              serve_rendered(options, serving.rendered, item, id));
     }
   });
 
@@ -246,12 +241,6 @@ module.exports = function(opts, callback) {
     style.serving_rendered = serving.rendered[id];
     return style;
   });
-
-  /*
-  app.use('/rendered/:id/$', function(req, res, next) {
-    return res.redirect(301, '/styles/' + req.params.id + '/');
-  });
-  */
 
   serveTemplate('/data/:id/$', 'data', function(params) {
     var id = params.id;

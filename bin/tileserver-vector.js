@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 'use strict';
 
 var opts = require('nomnom')
@@ -22,7 +21,7 @@ var opts = require('nomnom')
     }
   }).parse();
 
-return require('./server')({
+return require('../src/server')({
   config: opts.config,
   port: opts.port
 });

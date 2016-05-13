@@ -1,32 +1,33 @@
 {
-  "name": "tileserver-gl",
+  "name": "tileserver-vector",
   "version": "0.0.3",
-  "description": "Map tile server for JSON GL styles - serverside generated raster tiles",
-  "main": "src/main.js",
+  "description": "Map tile server for serving PBF from MBTiles",
+  "main": "bin/tileserver-vector.js",
+  "bin": "bin/tileserver-vector.js",
   "authors": [
-    "Petr Sloup <petr.sloup@klokantech.com>"
+    "Petr Sloup <petr.sloup@klokantech.com>",
+    "Lukas Martinelli <me@lukasmartinelli.ch>",
+    "Manuel Roth <mroth@hsr.ch>"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/klokantech/tileserver-gl.git"
+    "url": "https://github.com/osm2vectortiles/tileserver-vector.git"
   },
   "scripts": {
+    "start": "node bin/tileserver-vector.js",
     "test": "mocha test/**.js"
   },
   "dependencies": {
     "async": "1.5.2",
-    "advanced-pool": "0.3.1",
     "clone": "1.0.2",
     "color": "0.11.1",
     "cors": "2.7.1",
     "express": "4.13.4",
     "handlebars": "4.0.5",
-    "mapbox-gl-native": "3.1.2",
     "mbtiles": "0.9.0",
     "morgan": "1.7.0",
     "nomnom": "1.8.1",
     "request": "2.72.0",
-    "sharp": "0.14.1",
     "sphericalmercator": "1.0.5"
   },
   "devDependencies": {
