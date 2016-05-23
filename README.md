@@ -1,37 +1,31 @@
-# tileserver-vector
+# tileserver-gl-light
 
-A trimmed down fork of [tileserver-gl](https://github.com/klokantech/tileserver-gl) for serving MBTiles and Mapbox GL styles.
+A trimmed down fork of [tileserver-gl](https://github.com/klokantech/tileserver-gl) for serving MBTiles and
+predefined Mapbox GL styles.
 Built to support serving vectortiles from [OSM2VectorTiles](http://osm2vectortiles.org/).
 
 ## Get Started
 
-Install `tileserver-vector` from npm.
+Install `tileserver-gl-light` from npm.
 
 ```bash
-npm install -g tileserver-vector
+npm install -g tileserver-gl-light
 ```
 
-Clone the example containing styles and fonts compatible with osm2vectortiles.
+Now download vector tiles from [OSM2VectorTiles](http://osm2vectortiles.org/downloads/).
 
 ```bash
-git clone https://github.com/osm2vectortiles/mapbox-gl-styles.git
-cd mapbox-gl-styles
+curl -o zurich.mbtiles https://osm2vectortiles-downloads.os.zhdk.cloud.switch.ch/v1.0/extracts/zurich.mbtiles
 ```
 
-Now download vector tiles from [OSM2VectorTiles](http://osm2vectortiles.org/downloads/)
-and store it as `osm2vectortiles.mbtiles` in the directory.
+Start `tileserver-gl-light` with the downloaded vector tiles.
 
 ```bash
-curl -o osm2vectortiles.mbtiles https://osm2vectortiles-downloads.os.zhdk.cloud.switch.ch/v1.0/extracts/zurich.mbtiles
-```
-
-Start the tileserver.
-
-```bash
-tileserver-vector
+tileserver-gl-light zurich.mbtiles
 ```
 
 ## More Information
 
-More information is available on [tileserver-gl](https://github.com/klokantech/tileserver-gl) which we
-also recommend for production usage.
+This trimmed tileserver is merely for demonstration purposes.
+We recommend [tileserver-gl](https://github.com/klokantech/tileserver-gl)
+for production usage.

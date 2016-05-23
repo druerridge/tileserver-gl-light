@@ -1,9 +1,9 @@
 {
-  "name": "tileserver-vector",
-  "version": "0.0.3",
-  "description": "Map tile server for serving PBF from MBTiles",
-  "main": "bin/tileserver-vector.js",
-  "bin": "bin/tileserver-vector.js",
+  "name": "tileserver-gl-light",
+  "version": "0.0.4",
+  "description": "Map tile server with predefined styles for serving PBF from MBTiles",
+  "main": "bin/tileserver-gl-light.js",
+  "bin": "bin/tileserver-gl-light.js",
   "authors": [
     "Petr Sloup <petr.sloup@klokantech.com>",
     "Lukas Martinelli <me@lukasmartinelli.ch>",
@@ -11,10 +11,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/osm2vectortiles/tileserver-vector.git"
+    "url": "https://github.com/klokantech/tileserver-gl-light.git"
   },
   "scripts": {
-    "start": "node bin/tileserver-vector.js",
+    "start": "node bin/tileserver-gl-light.js",
     "test": "mocha test/**.js"
   },
   "dependencies": {
