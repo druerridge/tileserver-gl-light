@@ -11,7 +11,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/klokantech/tileserver-gl-light.git"
+    "url": "https://github.com/osm2vectortiles/tileserver-gl-light.git"
   },
   "scripts": {
     "start": "node bin/tileserver-gl-light.js",
