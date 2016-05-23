@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
+var path = require('path');
 var opts = require('nomnom')
   .option('mbtiles', {
     required: true,
@@ -22,6 +23,7 @@ var opts = require('nomnom')
   }).parse();
 
 return require('../src/server')({
+  installationPath: path.dirname(path.dirname(module.filename)),
   port: opts.port,
   mbtilesFile: opts.mbtiles
 });

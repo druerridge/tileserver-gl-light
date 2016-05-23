@@ -79,11 +79,10 @@ module.exports = function(opts, callback) {
   var paths = options.paths || {};
   options.paths = paths;
 
-  paths.installation = require('app-root-path').toString();
   paths.root = path.resolve(process.cwd(), paths.root || '');
-  paths.styles = path.resolve(paths.installation, paths.styles || '');
-  paths.fonts = path.resolve(paths.installation, paths.fonts || '');
-  paths.sprites = path.resolve(paths.installation, paths.sprites || '');
+  paths.styles = path.resolve(opts.installationPath, paths.styles || '');
+  paths.fonts = path.resolve(opts.installationPath, paths.fonts || '');
+  paths.sprites = path.resolve(opts.installationPath, paths.sprites || '');
   paths.mbtiles = path.resolve(paths.root, paths.mbtiles || '');
 
   var data = clone(config.data || {});
