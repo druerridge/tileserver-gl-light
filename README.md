@@ -15,13 +15,13 @@ npm install -g tileserver-gl-light
 Now download vector tiles from [OSM2VectorTiles](http://osm2vectortiles.org/downloads/).
 
 ```bash
-curl -o zurich.mbtiles https://osm2vectortiles-downloads.os.zhdk.cloud.switch.ch/v2.0/extracts/zurich.mbtiles
+curl -o zurich_switzerland.mbtiles https://osm2vectortiles-downloads.os.zhdk.cloud.switch.ch/v2.0/extracts/zurich_switzerland.mbtiles
 ```
 
 Start `tileserver-gl-light` with the downloaded vector tiles.
 
 ```bash
-tileserver-gl-light zurich.mbtiles
+tileserver-gl-light zurich_switzerland.mbtiles
 ```
 
 ## More Information
