@@ -2,10 +2,10 @@
 'use strict';
 
 var opts = require('nomnom')
-  .option('config', {
-    abbr: 'c',
-    default: 'config.json',
-    help: 'Configuration file'
+  .option('mbtiles', {
+    required: true,
+    position: 0,
+    help: "MBTiles path"
   })
   .option('port', {
     abbr: 'p',
@@ -22,6 +22,6 @@ var opts = require('nomnom')
   }).parse();
 
 return require('../src/server')({
-  config: opts.config,
-  port: opts.port
+  port: opts.port,
+  mbtilesFile: opts.mbtiles
 });

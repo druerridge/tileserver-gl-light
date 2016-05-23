@@ -19,6 +19,7 @@ var serve_font = require('./serve_font'),
     serve_data = require('./serve_data'),
     utils = require('./utils');
 
+
 module.exports = function(opts, callback) {
   var app = express().disable('x-powered-by'),
       serving = {
@@ -32,6 +33,7 @@ module.exports = function(opts, callback) {
       };
 
   app.enable('trust proxy');
+  app.use(cors());
 
   callback = callback || function() {};
 
@@ -39,25 +41,49 @@ module.exports = function(opts, callback) {
       process.env.NODE_ENV !== 'test') {
     app.use(morgan('dev'));
   }
-
-  var configPath = path.resolve(opts.config);
-
-  var config;
-  try {
-    config = require(configPath);
-  } catch (e) {
-    console.log('ERROR: Config file not found or invalid!');
-    console.log('       See README.md for instructions and sample data.');
-    process.exit(1);
-  }
+  var config = {
+    "options": {
+      "paths": {
+        "root": "",
+        "fonts": "glyphs",
+        "sprites": "sprites",
+        "styles": "styles",
+        "mbtiles": path.resolve(path.dirname(opts.mbtilesFile))
+      }
+    },
+    "styles": {
+      "bright": {
+        "style": "bright-v9.json"
+      },
+      "streets": {
+        "style": "streets-v9.json"
+      },
+      "basic": {
+        "style": "basic-v9.json"
+      },
+      "light": {
+        "style": "light-v9.json"
+      },
+      "dark": {
+        "style": "dark-v9.json"
+      }
+    },
+    "data": {
+      "osm2vectortiles": {
+        "mbtiles": path.basename(opts.mbtilesFile)
+      }
+    }
+  };
 
   var options = config.options || {};
   var paths = options.paths || {};
   options.paths = paths;
+
+  paths.installation = require('app-root-path').toString();
   paths.root = path.resolve(process.cwd(), paths.root || '');
-  paths.styles = path.resolve(paths.root, paths.styles || '');
-  paths.fonts = path.resolve(paths.root, paths.fonts || '');
-  paths.sprites = path.resolve(paths.root, paths.sprites || '');
+  paths.styles = path.resolve(paths.installation, paths.styles || '');
+  paths.fonts = path.resolve(paths.installation, paths.fonts || '');
+  paths.sprites = path.resolve(paths.installation, paths.sprites || '');
   paths.mbtiles = path.resolve(paths.root, paths.mbtiles || '');
 
   var data = clone(config.data || {});
@@ -82,7 +108,7 @@ module.exports = function(opts, callback) {
             return dataItemId;
           } else {
             var id = mbtiles.substr(0, mbtiles.lastIndexOf('.')) || mbtiles;
-            while (data[id]) id += '_';
+            // while (data[id]) id += '_';
             data[id] = {
               'mbtiles': mbtiles
             };
@@ -99,10 +125,9 @@ module.exports = function(opts, callback) {
     app.use('/fonts/', serve_font(options, serving.fonts));
   }
 
-  app.use(cors());
-
   Object.keys(data).forEach(function(id) {
     var item = data[id];
+    item.mbtiles = path.basename(opts.mbtilesFile);
     if (!item.mbtiles || item.mbtiles.length == 0) {
       console.log('Missing "mbtiles" property for ' + id);
       return;
@@ -149,109 +174,6 @@ module.exports = function(opts, callback) {
   // serve web presentations
   app.use('/', express.static(path.join(__dirname, '../public/resources')));
 
-  var templates = path.join(__dirname, '../public/templates');
-  var serveTemplate = function(path, template, dataGetter) {
-    fs.readFile(templates + '/' + template + '.tmpl', function(err, content) {
-      if (err) {
-        console.log('Template not found:', err);
-      }
-      var compiled = handlebars.compile(content.toString());
-
-      app.use(path, function(req, res, next) {
-        var data = {};
-        if (dataGetter) {
-          data = dataGetter(req.params);
-          if (!data) {
-            return res.status(404).send('Not found');
-          }
-        }
-        return res.status(200).send(compiled(data));
-      });
-    });
-  };
-
-  serveTemplate('/$', 'index', function() {
-    var styles = clone(config.styles || {});
-    Object.keys(styles).forEach(function(id) {
-      var style = styles[id];
-      style.name = (serving.styles[id] || serving.rendered[id] || {}).name;
-      style.serving_data = serving.styles[id];
-      style.serving_rendered = serving.rendered[id];
-      if (style.serving_rendered) {
-        var center = style.serving_rendered.center;
-        if (center) {
-          style.viewer_hash = '#' + center[2] + '/' +
-                              center[1].toFixed(5) + '/' +
-                              center[0].toFixed(5);
-
-          var centerPx = mercator.px([center[0], center[1]], center[2]);
-          style.thumbnail = center[2] + '/' +
-              Math.floor(centerPx[0] / 256) + '/' +
-              Math.floor(centerPx[1] / 256) + '.png';
-        }
-      }
-    });
-    var data = clone(serving.data || {});
-    Object.keys(data).forEach(function(id) {
-      var data_ = data[id];
-      var center = data_.center;
-      if (center) {
-        data_.viewer_hash = '#' + center[2] + '/' +
-                            center[1].toFixed(5) + '/' +
-                            center[0].toFixed(5);
-      }
-      data_.is_vector = data_.format == 'pbf';
-      if (!data_.is_vector) {
-        if (center) {
-          var centerPx = mercator.px([center[0], center[1]], center[2]);
-          data_.thumbnail = center[2] + '/' +
-              Math.floor(centerPx[0] / 256) + '/' +
-              Math.floor(centerPx[1] / 256) + '.' + data_.format;
-        }
-      }
-      if (data_.filesize) {
-        var suffix = 'kB';
-        var size = parseInt(data_.filesize, 10) / 1024;
-        if (size > 1024) {
-          suffix = 'MB';
-          size /= 1024;
-        }
-        if (size > 1024) {
-          suffix = 'GB';
-          size /= 1024;
-        }
-        data_.formatted_filesize = size.toFixed(2) + ' ' + suffix;
-      }
-    });
-    return {
-      styles: styles,
-      data: data
-    };
-  });
-
-  serveTemplate('/styles/:id/$', 'viewer', function(params) {
-    var id = params.id;
-    var style = clone((config.styles || {})[id]);
-    if (!style) {
-      return null;
-    }
-    style.id = id;
-    style.name = (serving.styles[id] || serving.rendered[id]).name;
-    style.serving_data = serving.styles[id];
-    style.serving_rendered = serving.rendered[id];
-    return style;
-  });
-
-  serveTemplate('/data/:id/$', 'data', function(params) {
-    var id = params.id;
-    var data = clone(serving.data[id]);
-    if (!data) {
-      return null;
-    }
-    data.id = id;
-    data.is_vector = data.format == 'pbf';
-    return data;
-  });
 
   var server = app.listen(process.env.PORT || opts.port, function() {
     console.log('Listening at http://%s:%d/',
