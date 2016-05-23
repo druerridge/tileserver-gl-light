@@ -18,40 +18,47 @@ document.addEventListener("DOMContentLoaded", function() {
 	var dark = document.getElementById("vector-dark");
 	var light = document.getElementById("vector-light");
 
+	var styleConfig = {
+	  value: getJsonCode("bright"),
+	  lineNumbers: true,
+	  readOnly: true,
+	  mode:  "javascript",
+	  json: true
+	};
+	var jsonCodeMirror = CodeMirror(document.querySelector("#map-style-code"), styleConfig);
+
 	var config = {
 	  value: getHtmlCode("bright"),
 	  lineNumbers: true,
 	  readOnly: true,
 	  mode:  "htmlmixed"
 	};
-	var myCodeMirror = CodeMirror(document.querySelector("#map-code"), config);
+	var htmlCodeMirror = CodeMirror(document.querySelector("#map-code"), config);
 
 	if(bright && basic && streets && dark && light) {
 		var styleUrl = "styles/";
-		addOnClickEventListener(bright, vectorMap, styleUrl + "bright.json", myCodeMirror, getHtmlCode("bright"), "bright");
-		addOnClickEventListener(basic, vectorMap, styleUrl + "basic.json", myCodeMirror, getHtmlCode("basic"), "basic");
-		addOnClickEventListener(streets, vectorMap, styleUrl + "streets.json", myCodeMirror, getHtmlCode("streets"), "streets");
-		addOnClickEventListener(dark, vectorMap, styleUrl + "dark.json", myCodeMirror, getHtmlCode("dark"), "dark");
-		addOnClickEventListener(light, vectorMap, styleUrl + "light.json", myCodeMirror, getHtmlCode("light"), "light");
-		setUrls();
+		addOnClickEventListener(bright, vectorMap, styleUrl + "bright.json", htmlCodeMirror, getHtmlCode("bright"), jsonCodeMirror, getJsonCode("bright"));
+		addOnClickEventListener(basic, vectorMap, styleUrl + "basic.json", htmlCodeMirror, getHtmlCode("basic"), jsonCodeMirror, getJsonCode("basic"));
+		addOnClickEventListener(streets, vectorMap, styleUrl + "streets.json", htmlCodeMirror, getHtmlCode("streets"), jsonCodeMirror, getJsonCode("streets"));
+		addOnClickEventListener(dark, vectorMap, styleUrl + "dark.json", htmlCodeMirror, getHtmlCode("dark"), jsonCodeMirror, getJsonCode("dark"));
+		addOnClickEventListener(light, vectorMap, styleUrl + "light.json", htmlCodeMirror, getHtmlCode("light"), jsonCodeMirror, getJsonCode("light"));
 	}	
-
 
 	// instantiate map clipboard
 	new Clipboard('.map-clipboard-button', {
 	    text: function(trigger) {
-	        return myCodeMirror.getDoc().getValue();
+	        return htmlCodeMirror.getDoc().getValue();
 	    }
 	});
 });
 
-function addOnClickEventListener(element, vectorMap, styleUrl, myCodeMirror, codeString, style) {
+function addOnClickEventListener(element, vectorMap, styleUrl, htmlCodeMirror, htmlCode, jsonCodeMirror, jsonCode) {
 	element.onclick = function(e) {
 		e.preventDefault();
         e.stopPropagation();
         vectorMap.setStyle(styleUrl);
-        myCodeMirror.setValue(codeString);
-        document.querySelector("#spriteUrl").innerHTML = window.location.href + "styles/" + style + "/sprite";
+        htmlCodeMirror.setValue(htmlCode);
+        jsonCodeMirror.setValue(jsonCode);
 	}
 }
 
@@ -61,16 +68,10 @@ function getHtmlCode(name) {
 	return "<!DOCTYPE html>\n<html>\n<head>\n\t<meta charset='utf-8'/>\n\t<title>OSM2VectorTiles with " + capitalizedName + " style</title>\n\t<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>\n\t<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.18.0/mapbox-gl.js'></script>\n\t<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.18.0/mapbox-gl.css' rel='stylesheet'/>\n\t<style>\n\t\tbody{margin:0; padding:0;}\n\t\t#map{position:absolute; top:0; bottom:0; width:100%;}\n\t</style>\n</head>\n<body>\n\t<div id='map'></div>\n\t<script>\n\t\tvar map = new mapboxgl.Map({\n\t\t\tcontainer: 'map', // container id\n\t\t\tstyle: '" + href + "styles/" + name + ".json',\n\t\t\tcenter: [8.5456, 47.3739], // starting position\n\t\t\tzoom: 11 // starting zoom\n\t\t});\n\t</script>\n</body>\n</html>";
 }
 
-function setUrls() {
+function getJsonCode(name) {
 	var href = window.location.href;
-	var tileJsonUrl = href + "data/osm2vectortiles.json";
-	document.querySelector("#tileJson").innerHTML = "<a href=" + tileJsonUrl +">" + tileJsonUrl + "</a>";
-	var tileUrl = href + "data/osm2vectortiles/{z}/{x}/{y}.pbf";
-	document.querySelector("#tileUrl").innerHTML = tileUrl;
-	var spriteUrl = href + "styles/bright/sprite";
-	document.querySelector("#spriteUrl").innerHTML = spriteUrl;
-	var fontUrl = href + "fonts/{fontstack}/{range}.pbf";
-	document.querySelector("#fontUrl").innerHTML = fontUrl;
+	var capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
+	return '{\n\t"version" : 8,\n\t"name" : "' + capitalizedName + '",\n\t"sources" : {\n\t\t"mapbox" : {\n\t\t\t"type" : "vector",\n\t\t\t"tiles" : [\n\t\t\t\t"' + href + "data/osm2vectortiles/{z}/{x}/{y}.pbf" + '"\n\t\t\t],\n\t\t\t"maxzoom": 14\n\t\t\t}\n\t},\n\t"sprite": "' + href + "styles/" + name + "/sprite" + '",\n\t"glyphs": "' + href + "fonts/{fontstack}/{range}.pbf" + '",\n\t"metadata": {...},\n\t"layers": [...]\n}';
 }
 
 function showCopiedHint() {
