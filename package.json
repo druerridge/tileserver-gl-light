@@ -14,8 +14,7 @@
     "url": "https://github.com/osm2vectortiles/tileserver-gl-light.git"
   },
   "scripts": {
-    "start": "node bin/tileserver-gl-light.js",
-    "test": "mocha test/**.js"
+    "start": "node bin/tileserver-gl-light.js"
   },
   "dependencies": {
     "async": "1.5.2",
@@ -25,10 +24,5 @@
     "mbtiles": "0.9.0",
     "morgan": "1.7.0",
     "nomnom": "1.8.1"
-  },
-  "devDependencies": {
-    "should": "^8.3.0",
-    "mocha": "^2.4.5",
-    "supertest": "^1.2.0"
   }
 }
