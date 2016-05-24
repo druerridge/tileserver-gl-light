@@ -2901,24 +2901,18 @@ body {
   border: none;
   background-color: #44A886;
   color: white;
-  font-weight: bold;
-  display: flex;
-  display: -webkit-flex;
-  /* Safari */
-  flex-direction: row;
-  -webkit-flex-direction: row;
-  align-items: center;
-  justify-content: center; }
+  font-weight: bold; }
 
 .map-clipboard-button:hover {
   cursor: pointer;
   background-color: #59C39F; }
 
 .map-clipboard-img {
-  height: 15px;
-  width: 15px;
-  margin: 0px !important;
-  margin-right: 7px !important; }
+  background-image: url(/img/clipboard-white.svg);
+  background-size: 15px 15px;
+  background-position: left center;
+  background-repeat: no-repeat;
+  padding-left: 22px; }
 
 .docs-section:hover > div {
   background-color: #F3F3F3;
