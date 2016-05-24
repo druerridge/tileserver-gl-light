@@ -1,17 +1,12 @@
 #!/usr/bin/env node
 'use strict';
 
-process.env.UV_THREADPOOL_SIZE =
-    Math.ceil(Math.max(4, require('os').cpus().length * 1.5));
-
 var fs = require('fs'),
     path = require('path');
 
 var clone = require('clone'),
     cors = require('cors'),
     express = require('express'),
-    handlebars = require('handlebars'),
-    mercator = new (require('sphericalmercator'))(),
     morgan = require('morgan');
 
 var serve_font = require('./serve_font'),
@@ -172,7 +167,6 @@ module.exports = function(opts, callback) {
   //------------------------------------
   // serve web presentations
   app.use('/', express.static(path.join(__dirname, '../public/resources')));
-
 
   var server = app.listen(process.env.PORT || opts.port, function() {
     console.log('Listening at http://%s:%d/',
