@@ -29,3 +29,8 @@ tileserver-gl-light zurich_switzerland.mbtiles
 This trimmed tileserver is merely for demonstration purposes.
 We recommend [tileserver-gl](https://github.com/klokantech/tileserver-gl)
 for production usage.
+
+## Style and Glyphs Copyright
+
+These styles are derived from https://github.com/mapbox/mapbox-gl-styles
+therefore Mapbox Open Styles are copyright (c) 2014, Mapbox, all rights reserved.
