@@ -10,6 +10,8 @@ var clone = require('clone'),
 
 var utils = require('./utils');
 
+Object.assign = require('object-assign');
+
 module.exports = function(options, repo, params, id) {
   var app = express().disable('x-powered-by');
 
