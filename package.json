@@ -1,6 +1,6 @@
 {
   "name": "tileserver-gl-light",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Map tile server with predefined styles for serving PBF from MBTiles",
   "main": "bin/tileserver-gl-light.js",
   "bin": "bin/tileserver-gl-light.js",
