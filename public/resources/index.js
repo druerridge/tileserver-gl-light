@@ -14,9 +14,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 
 	var basic = document.getElementById("vector-basic");
-	var streets = document.getElementById("vector-streets");
-	var dark = document.getElementById("vector-dark");
-	var light = document.getElementById("vector-light");
 
 	var styleConfig = {
 	  value: getJsonCode("bright"),
@@ -35,13 +32,10 @@ document.addEventListener("DOMContentLoaded", function() {
 	};
 	var htmlCodeMirror = CodeMirror(document.querySelector("#map-code"), config);
 
-	if(bright && basic && streets && dark && light) {
+	if(bright && basic) {
 		var styleUrl = "styles/";
 		addOnClickEventListener(bright, vectorMap, styleUrl + "bright.json", htmlCodeMirror, getHtmlCode("bright"), jsonCodeMirror, getJsonCode("bright"));
 		addOnClickEventListener(basic, vectorMap, styleUrl + "basic.json", htmlCodeMirror, getHtmlCode("basic"), jsonCodeMirror, getJsonCode("basic"));
-		addOnClickEventListener(streets, vectorMap, styleUrl + "streets.json", htmlCodeMirror, getHtmlCode("streets"), jsonCodeMirror, getJsonCode("streets"));
-		addOnClickEventListener(dark, vectorMap, styleUrl + "dark.json", htmlCodeMirror, getHtmlCode("dark"), jsonCodeMirror, getJsonCode("dark"));
-		addOnClickEventListener(light, vectorMap, styleUrl + "light.json", htmlCodeMirror, getHtmlCode("light"), jsonCodeMirror, getJsonCode("light"));
 	}	
 
 	// instantiate map clipboard
