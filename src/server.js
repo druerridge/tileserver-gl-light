@@ -50,17 +50,8 @@ module.exports = function(opts, callback) {
       "bright": {
         "style": "bright-v9.json"
       },
-      "streets": {
-        "style": "streets-v9.json"
-      },
       "basic": {
         "style": "basic-v9.json"
-      },
-      "light": {
-        "style": "light-v9.json"
-      },
-      "dark": {
-        "style": "dark-v9.json"
       }
     },
     "data": {
