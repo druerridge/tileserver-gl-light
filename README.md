@@ -1,5 +1,7 @@
 # tileserver-gl-light
 
+A specific implementation for our Google Cloud App Engine.
+
 A trimmed down fork of [tileserver-gl](https://github.com/klokantech/tileserver-gl) for serving MBTiles and
 predefined Mapbox GL styles.
 Built to support serving vectortiles from [OSM2VectorTiles](http://osm2vectortiles.org/).
