@@ -14,7 +14,7 @@
     "url": "https://github.com/osm2vectortiles/tileserver-gl-light.git"
   },
   "scripts": {
-    "start": "node bin/tileserver-gl-light.js"
+    "start": "node bin/tileserver-gl-light.js united_kingdom.mbtiles"
   },
   "dependencies": {
     "async": "1.5.2",
