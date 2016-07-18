@@ -70,13 +70,13 @@
         "mapbox": {
           "type": "vector",
           "tiles": [
-            "https://8080-dot-2105833-dot-devshell.appspot.com/data/osm2vectortiles/{z}/{x}/{y}.pbf"
+            "http://nssmap-123.appspot.com/data/osm2vectortiles/{z}/{x}/{y}.pbf"
           ],
           "maxzoom": 14
         }
     },
-    "sprite": "https://8080-dot-2105833-dot-devshell.appspot.com/styles/bright/sprite",
-    "glyphs": "https://8080-dot-2105833-dot-devshell.appspot.com/fonts/{fontstack}/{range}.pbf",
+    "sprite": "http://nssmap-123.appspot.com/styles/bright/sprite",
+    "glyphs": "http://nssmap-123.appspot.com/fonts/{fontstack}/{range}.pbf",
     "layers": [
         {
             "id": "background",
